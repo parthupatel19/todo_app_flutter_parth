@@ -97,70 +97,78 @@ class TodoListPage extends StatelessWidget {
           itemCount: todoSearch.length,
             itemBuilder: (context, index){
             final todo = todoSearch[index];
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 6,
-              margin: EdgeInsets.symmetric(vertical: 8),
-              child: ListTile(
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+
+            return Obx(()=> Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                leading: CircleAvatar(
-                  radius: 28,
-                  backgroundColor: _statusColor(todo.status).withOpacity(0.2),
-                  child: Icon(
-                    todo.status == "Done" ? Icons.check_circle :todo.status =="In-Progress" ?Icons.play_circle_fill :Icons.pending_actions,
-                    color: _statusColor(todo.status),
-                    size: 28,
+                elevation: 6,
+                margin: EdgeInsets.symmetric(vertical: 8),
+                child: ListTile(
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
                   ),
-                ),
-                title: Text(
-                    todo.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                subtitle:  Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 4),
-                    Text(
-                      todo.description,
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: _statusColor(todo.status).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                  leading: Obx(() =>
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundColor: _statusColor(todo.statusRx.value)
+                          .withOpacity(0.2),
+                      child: Icon(
+                        todo.statusRx.value == "Done"
+                            ? Icons.check_circle
+                            : todo.statusRx.value == "In-Progress" ? Icons
+                            .play_circle_fill : Icons.pending_actions,
+                        color: _statusColor(todo.statusRx.value),
+                        size: 28,
                       ),
-                      child: Text(
-                        "Status: ${todo.status}",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: _statusColor(todo.status),
+                    ),
+                  ),
+                  title: Text(
+                      todo.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle:  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 4),
+                      Text(
+                        todo.description,
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: _statusColor(todo.statusRx.value).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "Status: ${todo.statusRx.value}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: _statusColor(todo.statusRx.value),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                trailing: IconButton(
-                    onPressed: ()=> controller.deleteTodo(index),
-                    icon: Icon(
-                        Icons.delete_forever,
-                      color: Colors.redAccent,
-                    ),
-                ),
-                onTap: ()=>Get.toNamed(
-                  AppRoutes.details,
-                  arguments: {"index": index}
+                    ],
+                  ),
+                  trailing: IconButton(
+                      onPressed: ()=> controller.deleteTodo(todo),
+                      icon: Icon(
+                          Icons.delete_forever,
+                        color: Colors.redAccent,
+                      ),
+                  ),
+                  onTap: ()=>Get.toNamed(
+                    AppRoutes.details,
+                    arguments: {"todo": todo},
+                  ),
                 ),
               ),
             );

@@ -4,10 +4,12 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:todo_task/app/routes.dart';
 import 'package:todo_task/model/todo_model.dart';
+import 'package:todo_task/service/notification_ser.dart';
 
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   await Hive.initFlutter();
   Hive.registerAdapter(TodoModelAdapter());
   runApp(const MyApp());
