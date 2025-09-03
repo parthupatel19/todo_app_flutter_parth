@@ -66,7 +66,7 @@ class TodoController extends GetxController{
   }
 
   void _showNoti(TodoModel todo)async{
-    await NotificationService.showNoti("TODO Completed!", "${todo.title}is done !");
+    await NotificationService.showNoti("TODO Completed!", "${todo.title} is done !");
   }
 
 }
